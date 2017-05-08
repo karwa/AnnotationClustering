@@ -6,12 +6,9 @@
 //  Copyright © 2016 Gunter Hager. All rights reserved.
 //
 
-import Foundation
-import MapKit
-
 private let nodeCapacity = 8
 
-class QuadTreeNode {
+final class QuadTreeNode<T: Annotation> {
     
     var boundingBox: BoundingBox
     
@@ -20,7 +17,7 @@ class QuadTreeNode {
     var southEast: QuadTreeNode? = nil
     var southWest: QuadTreeNode? = nil
     
-    var annotations:[MKAnnotation] = []
+    var annotations: [T] = []
     
     // MARK: - Initializers
     
@@ -34,7 +31,7 @@ class QuadTreeNode {
     
     // Annotations
     
-    var allAnnotations: [MKAnnotation] {
+    var allAnnotations: [T] {
         var result = annotations
         result += northEast?.allAnnotations ?? []
         result += northWest?.allAnnotations ?? []
@@ -43,7 +40,7 @@ class QuadTreeNode {
         return result
     }
     
-    func addAnnotation(_ annotation: MKAnnotation) -> Bool {
+    func addAnnotation(_ annotation: T) -> Bool {
         guard boundingBox.contains(annotation.coordinate) else {
             return false
         }
@@ -71,7 +68,7 @@ class QuadTreeNode {
         return false
     }
     
-    func forEachAnnotationInBox(_ box: BoundingBox, block: (MKAnnotation) -> Void) {
+    func forEachAnnotationInBox(_ box: BoundingBox, block: (T) -> Void) {
         guard boundingBox.intersects(box) else { return }
         
         for annotation in annotations {

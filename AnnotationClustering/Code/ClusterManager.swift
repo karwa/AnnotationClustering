@@ -9,52 +9,35 @@
 import Foundation
 import MapKit
 
-/**
- *  Protocol that the Delegate of the cluster manager needs to implement.
- */
-public protocol ClusterManagerDelegate {
-    
-    /**
-     Provide a cell size factor for the cluster manager. The cell size factor defines the size of the cells that the map uses for clustering. Clusters are grouped into cells.
-     
-     - parameter manager: Manager that wants to know its cell size factor.
-     
-     - returns: A cell size factor fo rthe manager to use.
-     */
-    func cellSizeFactorForManager(_ manager: ClusterManager) -> CGFloat
-    
-}
-
 /// Class that manages the clustering of the annotations.
-open class ClusterManager {
+open class ClusterManager<T: Annotation> {
     
-    open var delegate: ClusterManagerDelegate?
     open var maxZoomLevel = 19
     
-    fileprivate var tree = QuadTree()    
+    fileprivate var tree = QuadTree<T>()
     fileprivate var lock = NSRecursiveLock()
     
     
-    public init(annotations: [MKAnnotation] = []){
+    public init(annotations: [T] = []){
         addAnnotations(annotations)
     }
     
-    open func setAnnotations(_ annotations:[MKAnnotation]) {
+    open func setAnnotations(_ annotations:[T]) {
         lock.lock()
         tree = QuadTree()
         addAnnotations(annotations)
         lock.unlock()
     }
     
-    open func addAnnotations(_ annotations:[MKAnnotation]) {
+    open func addAnnotations(_ annotations:[T]) {
         lock.lock()
         for annotation in annotations {
-            tree.addAnnotation(annotation)
+            _ = tree.addAnnotation(annotation)
         }
         lock.unlock()
     }
     
-    open func clusteredAnnotationsWithinMapRect(_ rect:MKMapRect, withZoomScale zoomScale:Double) -> [MKAnnotation] {
+    open func clusteredAnnotationsWithinMapRect(_ rect:MKMapRect, withZoomScale zoomScale:Double) -> [Annotation] {
         guard !zoomScale.isInfinite else { return [] }
         
         let zoomLevel   = ClusterManager.zoomScaleToZoomLevel(MKZoomScale(zoomScale))
@@ -67,7 +50,7 @@ open class ClusterManager {
         let minY = Int(floor(MKMapRectGetMinY(rect) * scaleFactor))
         let maxY = Int(floor(MKMapRectGetMaxY(rect) * scaleFactor))
         
-        var clusteredAnnotations = [MKAnnotation]()
+        var clusteredAnnotations = [Annotation]()
         
         lock.lock()
         
@@ -83,7 +66,7 @@ open class ClusterManager {
                 var totalLatitude:Double = 0
                 var totalLongitude:Double = 0
                 
-                var annotations = [MKAnnotation]()
+                var annotations = [T]()
                 
                 tree.forEachAnnotationInBox(mapBox) { (annotation) in
                     totalLatitude += annotation.coordinate.latitude
@@ -94,7 +77,7 @@ open class ClusterManager {
                 let count = annotations.count
                 
                 if count == 1 || zoomLevel >= self.maxZoomLevel {
-                    clusteredAnnotations += annotations
+                    clusteredAnnotations.append(contentsOf: annotations.lazy.map { $0 as Annotation })
                 }
                 else if count > 1 {
                     let coordinate = CLLocationCoordinate2D(
@@ -115,14 +98,14 @@ open class ClusterManager {
         return clusteredAnnotations
     }
     
-    open var allAnnotations: [MKAnnotation] {
+    open var allAnnotations: [T] {
         lock.lock()
         let annotations = tree.allAnnotations
         lock.unlock()
         return annotations
     }
     
-    open func displayAnnotations(_ annotations: [MKAnnotation], mapView:MKMapView){
+    open func displayAnnotations(_ annotations: [Annotation], mapView: MKMapView){
         
         DispatchQueue.main.async  {
             

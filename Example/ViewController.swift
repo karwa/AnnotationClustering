@@ -28,15 +28,14 @@ class ViewController: UIViewController {
     
     let numberOfLocations = 1000
     
-    let clusterManager = ClusterManager()
+    let clusterManager = ClusterManager<MKAnnotationWrapper<Annotation>>()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let annotations = randomLocationsWithCount(numberOfLocations)
+        let annotations = randomLocationsWithCount(count: numberOfLocations).map { MKAnnotationWrapper($0) }
         
         clusterManager.addAnnotations(annotations)
-        clusterManager.delegate = self
         
         mapView.centerCoordinate = CLLocationCoordinate2DMake(0, 0)
         mapView.delegate = self
@@ -45,8 +44,8 @@ class ViewController: UIViewController {
 
     // MARK: - Utility
     
-    func randomLocationsWithCount(count: Int) -> [MKAnnotation] {
-        var array = [MKAnnotation]()
+    func randomLocationsWithCount(count: Int) -> [Annotation] {
+        var array = [Annotation]()
         (0 ..< count).forEach { _ in
             let a = Annotation()
             a.coordinate = CLLocationCoordinate2D(latitude: drand48() * 40 - 20, longitude: drand48() * 80 - 40 )
@@ -57,20 +56,12 @@ class ViewController: UIViewController {
     
 }
 
-extension ViewController : ClusterManagerDelegate {
-    
-    func cellSizeFactorForManager(manager: ClusterManager) -> CGFloat {
-        return 1.0
-    }
-    
-}
-
 
 extension ViewController : MKMapViewDelegate {
     
-    func mapView(mapView: MKMapView, regionDidChangeAnimated animated: Bool){
+    func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool){
         
-        NSOperationQueue().addOperationWithBlock { [unowned self] in
+        OperationQueue().addOperation { [unowned self] in
             
             let mapBoundsWidth = Double(mapView.bounds.size.width)
             let mapRectWidth:Double = mapView.visibleMapRect.size.width
@@ -86,7 +77,7 @@ extension ViewController : MKMapViewDelegate {
     }
     
     // Note: The example app doesn't support showing the user location. The handling of the user location pin is given as an example here in case your app wants to use it.
-    func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         
         var reuseId = ""
         
@@ -96,7 +87,7 @@ extension ViewController : MKMapViewDelegate {
             
         case let cluster as AnnotationCluster:
             reuseId = "Cluster"
-            if let clusterView = mapView.dequeueReusableAnnotationViewWithIdentifier(reuseId) as? AnnotationClusterView {
+            if let clusterView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseId) as? AnnotationClusterView {
                 clusterView.reuseWithAnnotation(cluster)
                 return clusterView
             }
@@ -108,7 +99,7 @@ extension ViewController : MKMapViewDelegate {
 
         default:
             reuseId = "Pin"
-            if let pinView = mapView.dequeueReusableAnnotationViewWithIdentifier(reuseId) as? MKPinAnnotationView {
+            if let pinView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseId) as? MKPinAnnotationView {
                 pinView.annotation = annotation
                 return pinView
             }

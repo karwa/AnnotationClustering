@@ -25,6 +25,7 @@
 		BC3765551D100B1E00BA8E58 /* AnnotationClustering.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC1437321D06C14B006891D8 /* AnnotationClustering.framework */; };
 		BC37655C1D100B4B00BA8E58 /* QuadTreeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC37655B1D100B4B00BA8E58 /* QuadTreeTests.swift */; };
 		BC37655E1D100C7D00BA8E58 /* Annotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC37655D1D100C7D00BA8E58 /* Annotation.swift */; };
+		FAA8DD901EBCB00C00E132CF /* Annotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA8DD8F1EBCB00C00E132CF /* Annotation.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -88,6 +89,7 @@
 		BC3765541D100B1E00BA8E58 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BC37655B1D100B4B00BA8E58 /* QuadTreeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuadTreeTests.swift; sourceTree = "<group>"; };
 		BC37655D1D100C7D00BA8E58 /* Annotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Annotation.swift; sourceTree = "<group>"; };
+		FAA8DD8F1EBCB00C00E132CF /* Annotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Annotation.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -176,6 +178,7 @@
 		BC1437571D06C310006891D8 /* QuadTree */ = {
 			isa = PBXGroup;
 			children = (
+				FAA8DD8F1EBCB00C00E132CF /* Annotation.swift */,
 				BC1437541D06C303006891D8 /* QuadTree.swift */,
 				BC1437581D06C31E006891D8 /* QuadTreeNode.swift */,
 				BC14375A1D06C467006891D8 /* BoundingBox.swift */,
@@ -359,6 +362,7 @@
 				BC1437591D06C31E006891D8 /* QuadTreeNode.swift in Sources */,
 				BC14375D1D06D8F7006891D8 /* AnnotationCluster.swift in Sources */,
 				BC1437551D06C303006891D8 /* QuadTree.swift in Sources */,
+				FAA8DD901EBCB00C00E132CF /* Annotation.swift in Sources */,
 				BC14375F1D06DA19006891D8 /* ClusterManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -561,7 +565,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = name.gunterhager.Example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 2.3;
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -576,7 +580,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = name.gunterhager.Example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 2.3;
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;

@@ -23,6 +23,10 @@ struct BoundingBox {
     init(mapRect: MKMapRect) {
         rect = mapRect
     }
+    
+    init() {
+        self.init(mapRect: MKMapRectWorld)
+    }
 
     // MARK: - Convenience accessors
     

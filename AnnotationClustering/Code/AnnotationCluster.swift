@@ -11,14 +11,15 @@ import MapKit
 
 /// Class that represents an annotation cluster.
 /// - Note: Needs to subclass NSObject to be able to conform to MKAnnotation
-open class AnnotationCluster: NSObject {
+public class AnnotationCluster: NSObject {
     open var coordinate = CLLocationCoordinate2D(latitude: 0, longitude:0)
     
     open var title: String? = "cluster"
     open var subtitle: String?
     
     /// Annotations that are represented by this cluster.
-    open var annotations: [MKAnnotation] = []
+    open var annotations: [Annotation] = []
 }
 
 extension AnnotationCluster: MKAnnotation {}
+extension AnnotationCluster: Annotation {}
