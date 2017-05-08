@@ -38,7 +38,7 @@ class QuadTreeTests: XCTestCase {
         let numberOfAnnotations = 10000
         let tree = QuadTree()
         
-        self.measureBlock {
+        self.measure {
             (0 ..< numberOfAnnotations).forEach { _ in
                 tree.addAnnotation(Annotation())
             }

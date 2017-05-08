@@ -16,6 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "AnnotationClustering"
+  s.platform     = :ios, '9.0'
   s.version      = "0.5"
   s.summary      = "Framework that clusters annotations on MKMapView."
 
@@ -24,8 +25,7 @@ Pod::Spec.new do |s|
   #   * Try to keep it short, snappy and to the point.
   #   * Write the description between the DESC delimiters below.
   #   * Finally, don't worry about the indent, CocoaPods strips it!
-  s.description  = <<-DESC
-                   DESC
+  s.description  = "Framework that clusters annotations on MKMapView or something."
 
   s.homepage     = "https://github.com/karwa/AnnotationClustering"
   # s.screenshots  = "www.example.com/screenshots_1.gif", "www.example.com/screenshots_2.gif"
@@ -90,8 +90,8 @@ Pod::Spec.new do |s|
   #  Not including the public_header_files will make all headers public.
   #
 
-  s.source_files  = "Classes", "Classes/**/*.{h,m}"
-  s.exclude_files = "Classes/Exclude"
+  s.source_files  = "AnnotationClustering/Code/**/*.swift"
+  s.exclude_files = ""
 
   # s.public_header_files = "Classes/**/*.h"
 
@@ -116,7 +116,7 @@ Pod::Spec.new do |s|
   #  the lib prefix of their name.
   #
 
-  # s.framework  = "SomeFramework"
+   s.framework  = "Foundation", "MapKit"
   # s.frameworks = "SomeFramework", "AnotherFramework"
 
   # s.library   = "iconv"
